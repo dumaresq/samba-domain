@@ -16,5 +16,4 @@ jobs:
     - name: Build the samba-domain Docker image
       run: |
         docker build . --tag ghcr.io/dumaresq/samba-domain:latest
-        docker run ghcr.io/dumaresq/samba-domain:latest
         docker push ghcr.io/dumaresq/samba-domain:latest
