@@ -10,7 +10,6 @@ uses: docker/login-action@v1
 with:
 registry: ghcr.io
 username: ${{ github.actor }}
-password: ${{ secrets.GITHUB_TOKEN }}
 - name: Build the samba-domain Docker image
 run: |
        docker build . --tag ghcr.io/dumaresq/samba-domain:latest
