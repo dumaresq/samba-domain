@@ -29,6 +29,12 @@ cd samba-domain
 docker build -t samba-domain .
 ```
 
+Or just use the HUB:
+
+```
+docker pull ghcr.io/dumaresq/samba-domain:latest
+```
+
 ## Setting things up for the container
 To set things up you will first want a new IP on your host machine so that ports don't conflict. A domain controller needs a lot of ports, and will likely conflict with things like dnsmasq. The below commands will do this, and set up some required folders.
 
@@ -97,7 +103,7 @@ Then add a share to the end based on how you mount the volume:
 Check the samba documentation for how to allow groups/etc.
 
 ## Examples with docker run
-Keep in mind, for all examples replace `nowsci/samba-domain` with `samba-domain` if you build your own from GitHub.
+Keep in mind, for all examples replace `ghcr.io/dumaresq/samba-domain:latest` with `samba-domain` if you build your own from GitHub.
 
 Start a new domain, and forward non-resolvable queries to the main DNS server
 * Local site is `192.168.3.0`
@@ -139,7 +145,7 @@ docker run -t -i \
     -h exampledc \
     --name samba \
     --privileged \
-    nowsci/samba-domain
+    ghcr.io/dumaresq/samba-domain:latest
 ```
 
 Join an existing domain, and forward non-resolvable queries to the main DNS server
@@ -185,7 +191,7 @@ docker run -t -i \
     -h exampledc \
     --name samba \
     --privileged \
-    nowsci/samba-domain
+    ghcr.io/dumaresq/samba-domain:latest
 ```
 
 Join an existing domain, forward DNS, remove security features, and connect to a remote site via openvpn
@@ -245,7 +251,7 @@ docker run -t -i \
     --cap-add=SYS_NICE \
     --cap-add=SYS_TIME \
     --device /dev/net/tun \
-    nowsci/samba-domain
+    ghcr.io/dumaresq/samba-domain:latest
 ```
 
 
@@ -266,7 +272,7 @@ services:
 # ----------- samba begin ----------- #
 
   samba:
-    image: nowsci/samba-domain
+    image: ghcr.io/dumaresq/samba-domain:latest
     container_name: samba
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -331,7 +337,7 @@ services:
 # ----------- samba begin ----------- #
 
   samba:
-    image: nowsci/samba-domain
+    image: ghcr.io/dumaresq/samba-domain:latest
     container_name: samba
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -400,7 +406,7 @@ services:
 # ----------- samba begin ----------- #
 
   samba:
-    image: nowsci/samba-domain
+    image: ghcr.io/dumaresq/samba-domain:latest
     container_name: samba
     volumes:
       - /etc/localtime:/etc/localtime:ro
