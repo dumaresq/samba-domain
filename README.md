@@ -24,15 +24,9 @@ A well documented, tried and tested Samba Active Directory Domain Controller tha
 ```
 mkdir -p /data/docker/builds
 cd /data/docker/builds
-git clone https://github.com/Fmstrat/samba-domain.git
+git clone https://github.com/dumaresq/samba-domain.git
 cd samba-domain
 docker build -t samba-domain .
-```
-
-Or just use the HUB:
-
-```
-docker pull nowsci/samba-domain
 ```
 
 ## Setting things up for the container
