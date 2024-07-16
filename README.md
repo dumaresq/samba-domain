@@ -1,5 +1,7 @@
 # Samba Active Directory Domain Controller for Docker
 
+Latest documentation available at: https://nowsci.com/#/samba-domain/?id=samba-active-directory-domain-controller-for-docker
+
 A well documented, tried and tested Samba Active Directory Domain Controller that works with the standard Windows management tools; built from scratch using internal DNS and kerberos and not based on existing containers.
 
 ## Environment variables for quick start
@@ -133,8 +135,8 @@ docker run -t -i \
     -p 192.168.3.222:464:464 \
     -p 192.168.3.222:464:464/udp \
     -p 192.168.3.222:636:636 \
-    -p 192.168.3.222:1024-1044:1024-1044 \
     -p 192.168.3.222:3268-3269:3268-3269 \
+    -p 192.168.3.222:49152-49172:49152-49172 \
     -v /etc/localtime:/etc/localtime:ro \
     -v /data/docker/containers/samba/data/:/var/lib/samba \
     -v /data/docker/containers/samba/config/samba:/etc/samba/external \
@@ -178,8 +180,8 @@ docker run -t -i \
     -p 192.168.3.222:464:464 \
     -p 192.168.3.222:464:464/udp \
     -p 192.168.3.222:636:636 \
-    -p 192.168.3.222:1024-1044:1024-1044 \
     -p 192.168.3.222:3268-3269:3268-3269 \
+    -p 192.168.3.222:49152-49172:49152-49172 \
     -v /etc/localtime:/etc/localtime:ro \
     -v /data/docker/containers/samba/data/:/var/lib/samba \
     -v /data/docker/containers/samba/config/samba:/etc/samba/external \
@@ -229,8 +231,8 @@ docker run -t -i \
     -p 192.168.3.222:464:464 \
     -p 192.168.3.222:464:464/udp \
     -p 192.168.3.222:636:636 \
-    -p 192.168.3.222:1024-1044:1024-1044 \
     -p 192.168.3.222:3268-3269:3268-3269 \
+    -p 192.168.3.222:49152-49172:49152-49172 \
     -v /etc/localtime:/etc/localtime:ro \
     -v /data/docker/containers/samba/data/:/var/lib/samba \
     -v /data/docker/containers/samba/config/samba:/etc/samba/external \
@@ -301,8 +303,8 @@ services:
       - 192.168.3.222:464:464
       - 192.168.3.222:464:464/udp
       - 192.168.3.222:636:636
-      - 192.168.3.222:1024-1044:1024-1044
       - 192.168.3.222:3268-3269:3268-3269
+      - 192.168.3.222:49152-49172:49152-49172
     dns_search:
       - corp.example.com
     dns:
@@ -367,8 +369,8 @@ services:
       - 192.168.3.222:464:464
       - 192.168.3.222:464:464/udp
       - 192.168.3.222:636:636
-      - 192.168.3.222:1024-1044:1024-1044
       - 192.168.3.222:3268-3269:3268-3269
+      - 192.168.3.222:49152-49172:49152-49172
     dns_search:
       - corp.example.com
     dns:
@@ -441,8 +443,8 @@ services:
       - 192.168.3.222:464:464
       - 192.168.3.222:464:464/udp
       - 192.168.3.222:636:636
-      - 192.168.3.222:1024-1044:1024-1044
       - 192.168.3.222:3268-3269:3268-3269
+      - 192.168.3.222:49152-49172:49152-49172
     dns_search:
       - corp.example.com
     dns:
