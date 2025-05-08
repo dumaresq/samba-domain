@@ -91,36 +91,28 @@ appSetup () {
 	fi
         
 	# Set up supervisor
-	echo "[supervisord]" > /etc/supervisor/conf.d/supervisord.conf
-	echo "nodaemon=true" >> /etc/supervisor/conf.d/supervisord.conf
-	echo "" >> /etc/supervisor/conf.d/supervisord.conf
-	echo "[program:ntpd]" >> /etc/supervisor/conf.d/supervisord.conf
-	echo "command=/usr/sbin/ntpd -c /etc/ntpd.conf -n" >> /etc/supervisor/conf.d/supervisord.conf
-	echo "[program:samba]" >> /etc/supervisor/conf.d/supervisord.conf
-	echo "command=/usr/sbin/samba -i" >> /etc/supervisor/conf.d/supervisord.conf
+	mkdir -p /etc/supervisor.d/
+	echo "[supervisord]" > /etc/supervisor.d/samba.ini
+	echo "nodaemon=true" >> /etc/supervisor.d/samba.ini
+	echo "" >> /etc/supervisor.d/samba.ini
+	echo "[program:syslog-ng]" >> /etc/supervisor.d/samba.ini
+	echo "command=/usr/sbin/syslog-ng -F --cfgfile /etc/syslog-ng/syslog-ng.conf --control /var/lib/syslog-ng/syslog-ng.ctl --persist-file /var/lib/syslog-ng/syslog-ng.persist --pidfile /run/syslog-ng.pid" >> /etc/supervisor.d/samba.ini
+	echo "[program:ntpd]" >> /etc/supervisor.d/samba.ini
+	echo "command=/usr/sbin/ntpd -f /etc/ntpd.conf -d" >> /etc/supervisor.d/samba.ini
+	echo "[program:samba]" >> /etc/supervisor.d/samba.ini
+	echo "command=/usr/sbin/samba -i" >> /etc/supervisor.d/samba.ini
 	if [[ ${MULTISITE,,} == "true" ]]; then
 		if [[ -n $VPNPID ]]; then
 			kill $VPNPID
 		fi
-		echo "" >> /etc/supervisor/conf.d/supervisord.conf
-		echo "[program:openvpn]" >> /etc/supervisor/conf.d/supervisord.conf
-		echo "command=/usr/sbin/openvpn --config /docker.ovpn" >> /etc/supervisor/conf.d/supervisord.conf
+		echo "" >> /etc/supervisor.d/samba.ini
+		echo "[program:openvpn]" >> /etc/supervisor.d/samba.ini
+		echo "command=/usr/sbin/openvpn --config /docker.ovpn" >> /etc/supervisor.d/samba.ini
 	fi
 
-	echo "server 127.127.1.0" > /etc/ntpd.conf
-	echo "fudge  127.127.1.0 stratum 10" >> /etc/ntpd.conf
-	echo "server 0.pool.ntp.org     iburst prefer" >> /etc/ntpd.conf
-	echo "server 1.pool.ntp.org     iburst prefer" >> /etc/ntpd.conf
-	echo "server 2.pool.ntp.org     iburst prefer" >> /etc/ntpd.conf
-	echo "driftfile       /var/lib/ntp/ntp.drift" >> /etc/ntpd.conf
-	echo "logfile         /var/log/ntp" >> /etc/ntpd.conf
-	echo "ntpsigndsocket  /usr/local/samba/var/lib/ntp_signd/" >> /etc/ntpd.conf
-	echo "restrict default kod nomodify notrap nopeer mssntp" >> /etc/ntpd.conf
-	echo "restrict 127.0.0.1" >> /etc/ntpd.conf
-	echo "restrict 0.pool.ntp.org   mask 255.255.255.255    nomodify notrap nopeer noquery" >> /etc/ntpd.conf
-	echo "restrict 1.pool.ntp.org   mask 255.255.255.255    nomodify notrap nopeer noquery" >> /etc/ntpd.conf
-	echo "restrict 2.pool.ntp.org   mask 255.255.255.255    nomodify notrap nopeer noquery" >> /etc/ntpd.conf
-	echo "tinker panic 0" >> /etc/ntpd.conf
+	echo "server 0.pool.ntp.org" > /etc/ntpd.conf
+	echo "server 1.pool.ntp.org" >> /etc/ntpd.conf
+	echo "server 2.pool.ntp.org" >> /etc/ntpd.conf
 
 	appStart ${FIRSTRUN}
 }
@@ -172,19 +164,19 @@ schemaIDGUID:: +8nFQ43rpkWTOgbCCcSkqA==" > /tmp/Sshpubkey.class.ldif
 }
 
 appStart () {
-	/usr/bin/supervisord > /var/log/supervisor/supervisor.log 2>&1 &
+	/usr/bin/supervisord > /var/log/supervisor.log 2>&1 &
 	if [ "${1}" = "true" ]; then
 		echo "Sleeping 10 before checking on Domain Users of gid 3000000 and setting up sshPublicKey"
 		sleep 10
 		fixDomainUsersGroup
 		setupSSH
 	fi
-	while [ ! -f /var/log/supervisor/supervisor.log ]; do
+	while [ ! -f /var/log/supervisor.log ]; do
 		echo "Waiting for log files..."
 		sleep 1
 	done
 	sleep 3
-	tail -F /var/log/supervisor/*.log
+	tail -F /var/log/supervisor.log
 }
 
 appSetup

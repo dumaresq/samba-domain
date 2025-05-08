@@ -1,33 +1,20 @@
-FROM ubuntu:latest
-
-ENV DEBIAN_FRONTEND noninteractive
+FROM alpine:latest
 
 RUN \
-    apt-get update &&\
-    apt-get install -y \
-        pkg-config \
-        attr \
-        acl \
-        samba \
-        smbclient \
-        ldap-utils \
-        winbind \
-        libnss-winbind \
-        libpam-winbind \
-        krb5-user \
-        krb5-kdc \
-        supervisor \
-        openvpn \
-        inetutils-ping \
-        ldb-tools \
-        vim \
-        curl \
-        dnsutils \
-        ntp &&\
-    apt-get clean autoclean &&\
-    apt-get autoremove --yes &&\
-    rm -rf /var/lib/{apt,dpkg,cache,log}/ &&\
-    rm -fr /tmp/* /var/tmp/*
+    apk add -U --upgrade --no-cache samba-dc \
+    attr \
+    openldap-clients \
+    krb5 \
+    supervisor \
+    openvpn \
+    iputils \
+    ldb-tools \
+    vim \
+    curl \
+    bind-tools \
+    bash \
+    openntpd \
+    syslog-ng
 
 VOLUME [ "/var/lib/samba", "/etc/samba/external" ]
 
