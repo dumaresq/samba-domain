@@ -14,6 +14,7 @@ RUN \
     bind-tools \
     bash \
     openntpd \
+    chrony \
     syslog-ng
 
 VOLUME [ "/var/lib/samba", "/etc/samba/external" ]

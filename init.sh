@@ -97,8 +97,8 @@ appSetup () {
 	echo "" >> /etc/supervisor.d/samba.ini
 	echo "[program:syslog-ng]" >> /etc/supervisor.d/samba.ini
 	echo "command=/usr/sbin/syslog-ng -F --cfgfile /etc/syslog-ng/syslog-ng.conf --control /var/lib/syslog-ng/syslog-ng.ctl --persist-file /var/lib/syslog-ng/syslog-ng.persist --pidfile /run/syslog-ng.pid" >> /etc/supervisor.d/samba.ini
-	echo "[program:ntpd]" >> /etc/supervisor.d/samba.ini
-	echo "command=/usr/sbin/ntpd -f /etc/ntpd.conf -d" >> /etc/supervisor.d/samba.ini
+	echo "[program:chrony]" >> /etc/supervisor.d/samba.ini
+	echo "command=/usr/sbin/chronyd -n" >> /etc/supervisor.d/samba.ini
 	echo "[program:samba]" >> /etc/supervisor.d/samba.ini
 	echo "command=/usr/sbin/samba -i" >> /etc/supervisor.d/samba.ini
 	if [[ ${MULTISITE,,} == "true" ]]; then
@@ -110,9 +110,8 @@ appSetup () {
 		echo "command=/usr/sbin/openvpn --config /docker.ovpn" >> /etc/supervisor.d/samba.ini
 	fi
 
-	echo "server 0.pool.ntp.org" > /etc/ntpd.conf
-	echo "server 1.pool.ntp.org" >> /etc/ntpd.conf
-	echo "server 2.pool.ntp.org" >> /etc/ntpd.conf
+	echo "ntpsigndsocket  /var/lib/samba/ntp_signd" >> /etc/chrony/chrony.conf
+	echo "allow 0.0.0.0/0" >> /etc/chrony/chrony.conf
 
 	appStart ${FIRSTRUN}
 }
