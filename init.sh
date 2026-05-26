@@ -91,33 +91,27 @@ appSetup () {
 	fi
         
 	# Set up supervisor
-	mkdir -p /etc/supervisor.d/
-	echo "[supervisord]" > /etc/supervisor.d/samba.ini
-	echo "nodaemon=true" >> /etc/supervisor.d/samba.ini
-	echo "" >> /etc/supervisor.d/samba.ini
-	echo "[program:syslog-ng]" >> /etc/supervisor.d/samba.ini
-	echo "command=/usr/sbin/syslog-ng -F --cfgfile /etc/syslog-ng/syslog-ng.conf --control /var/lib/syslog-ng/syslog-ng.ctl --persist-file /var/lib/syslog-ng/syslog-ng.persist --pidfile /run/syslog-ng.pid" >> /etc/supervisor.d/samba.ini
-	echo "[program:chrony]" >> /etc/supervisor.d/samba.ini
-	echo "command=/usr/sbin/chronyd -n" >> /etc/supervisor.d/samba.ini
-	echo "[program:samba]" >> /etc/supervisor.d/samba.ini
-	echo "command=/usr/sbin/samba -i" >> /etc/supervisor.d/samba.ini
-        echo "stdout_logfile=/var/log/samba/sambastout.log" >> /etc/supervisor.d/samba.ini
-        echo "stdout_logfile_maxbytes=5MB" >> /etc/supervisor.d/samba.ini
-        echo "stdout_logfile_backups=10" >> /etc/supervisor.d/samba.ini
-        echo "stdout_events_enabled=false" >> /etc/supervisor.d/samba.ini
-        echo "stdout_syslog=false" >> /etc/supervisor.d/samba.ini
-        echo "stderr_logfile=/var/log/samba/sambasterr.log" >> /etc/supervisor.d/samba.ini
-        echo "stderr_logfile_maxbytes=5MB" >> /etc/supervisor.d/samba.ini
-        echo "stderr_logfile_backups=10" >> /etc/supervisor.d/samba.ini
-        echo "stderr_events_enabled=false" >> /etc/supervisor.d/samba.ini
-        echo "stderr_syslog=false" >> /etc/supervisor.d/samba.ini
-	if [[ ${MULTISITE,,} == "true" ]]; then
-		if [[ -n $VPNPID ]]; then
-			kill $VPNPID
-		fi
+	if [[ `mountpoint -q /etc/supervisor.d/` ]]; then
+		#If the mountpoint doesn't exist create a samba.ini
+ 		#If it does exist, make sure you have supervisor files to start samba and whatever else you need!
+		mkdir -p /etc/supervisor.d/
+		echo "[supervisord]" > /etc/supervisor.d/samba.ini
+		echo "nodaemon=true" >> /etc/supervisor.d/samba.ini
 		echo "" >> /etc/supervisor.d/samba.ini
-		echo "[program:openvpn]" >> /etc/supervisor.d/samba.ini
-		echo "command=/usr/sbin/openvpn --config /docker.ovpn" >> /etc/supervisor.d/samba.ini
+		echo "[program:syslog-ng]" >> /etc/supervisor.d/samba.ini
+		echo "command=/usr/sbin/syslog-ng -F --cfgfile /etc/syslog-ng/syslog-ng.conf --control /var/lib/syslog-ng/syslog-ng.ctl --persist-file /var/lib/syslog-ng/syslog-ng.persist --pidfile /run/syslog-ng.pid" >> /etc/supervisor.d/samba.ini
+		echo "[program:chrony]" >> /etc/supervisor.d/samba.ini
+		echo "command=/usr/sbin/chronyd -n" >> /etc/supervisor.d/samba.ini
+		echo "[program:samba]" >> /etc/supervisor.d/samba.ini
+		echo "command=/usr/sbin/samba -i" >> /etc/supervisor.d/samba.ini
+		if [[ ${MULTISITE,,} == "true" ]]; then
+			if [[ -n $VPNPID ]]; then
+				kill $VPNPID
+			fi
+			echo "" >> /etc/supervisor.d/samba.ini
+			echo "[program:openvpn]" >> /etc/supervisor.d/samba.ini
+			echo "command=/usr/sbin/openvpn --config /docker.ovpn" >> /etc/supervisor.d/samba.ini
+		fi
 	fi
 
 	echo "ntpsigndsocket  /var/lib/samba/ntp_signd" >> /etc/chrony/chrony.conf
