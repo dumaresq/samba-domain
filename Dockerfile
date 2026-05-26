@@ -13,7 +13,6 @@ RUN \
     curl \
     bind-tools \
     bash \
-    openntpd \
     chrony \
     syslog-ng
 

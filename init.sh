@@ -101,6 +101,16 @@ appSetup () {
 	echo "command=/usr/sbin/chronyd -n" >> /etc/supervisor.d/samba.ini
 	echo "[program:samba]" >> /etc/supervisor.d/samba.ini
 	echo "command=/usr/sbin/samba -i" >> /etc/supervisor.d/samba.ini
+        echo "stdout_logfile=/var/log/samba/sambastout.log" >> /etc/supervisor.d/samba.ini
+        echo "stdout_logfile_maxbytes=5MB" >> /etc/supervisor.d/samba.ini
+        echo "stdout_logfile_backups=10" >> /etc/supervisor.d/samba.ini
+        echo "stdout_events_enabled=false" >> /etc/supervisor.d/samba.ini
+        echo "stdout_syslog=false" >> /etc/supervisor.d/samba.ini
+        echo "stderr_logfile=/var/log/samba/sambasterr.log" >> /etc/supervisor.d/samba.ini
+        echo "stderr_logfile_maxbytes=5MB" >> /etc/supervisor.d/samba.ini
+        echo "stderr_logfile_backups=10" >> /etc/supervisor.d/samba.ini
+        echo "stderr_events_enabled=false" >> /etc/supervisor.d/samba.ini
+        echo "stderr_syslog=false" >> /etc/supervisor.d/samba.ini
 	if [[ ${MULTISITE,,} == "true" ]]; then
 		if [[ -n $VPNPID ]]; then
 			kill $VPNPID
