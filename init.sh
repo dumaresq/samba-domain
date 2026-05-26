@@ -91,7 +91,7 @@ appSetup () {
 	fi
         
 	# Set up supervisor
-	if [[ `mountpoint -q /etc/supervisor.d/` ]]; then
+	if ! mountpoint -q /etc/supervisor.d/; then
 		#If the mountpoint doesn't exist create a samba.ini
  		#If it does exist, make sure you have supervisor files to start samba and whatever else you need!
 		mkdir -p /etc/supervisor.d/
