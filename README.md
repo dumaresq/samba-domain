@@ -18,6 +18,8 @@
 * `/data/docker/containers/samba/config/samba:/etc/samba/external` - Stores the smb.conf so the container can be mored or updates can be easily made.
 * `/data/docker/containers/samba/config/openvpn/docker.ovpn:/docker.ovpn` - Optional for connecting to another site via openvpn.
 * `/data/docker/containers/samba/config/openvpn/credentials:/credentials` - Optional for connecting to another site via openvpn that requires a username/password. The format for this file should be two lines, with the username on the first, and the password on the second. Also, make sure your ovpn file contains `auth-user-pass /credentials`
+* `/data/docker/containers/samba/config/syslog:/etc/syslog-ng/conf.d` - Optional for syslog-ng if you want to send syslog menssages remotely include .conf files in here.
+* `/data/docker/containers/samba/config/supervisor:/etc/supervisor.d` - Optional if you want to have a fixed set of supervisor files, please note if you use this you MUST define syslog,chrony and samba manually.  if you do not provide this samba.ini will be create at start time to kickoff these files.  You almost definitly do NOT want to define this!
 
 ## Downloading and building
 ```
